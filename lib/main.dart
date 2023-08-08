@@ -1,20 +1,30 @@
+import 'dart:ffi';
+
 import 'package:another_flutter_splash_screen/another_flutter_splash_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:hive/hive.dart';
 import 'package:http/http.dart';
+import 'package:intl/date_symbol_data_file.dart';
+import 'package:intl/intl.dart';
+import 'package:jiffy/jiffy.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test_test/view/Create_account.dart';
 import 'package:test_test/view/Home.dart';
 import 'package:test_test/view/Reset%20password.dart';
 import 'package:test_test/view/chat.dart';
 import 'package:test_test/view/chatsn.dart';
+import 'package:test_test/view/list2.dart';
 import 'package:test_test/view/sign_in.dart';
 import 'package:test_test/view/stories.dart';
+import 'package:test_test/view/test_lo_fi.dart';
+import 'package:test_test/view/tez.dart';
 import 'controller/Home_controller.dart';
 import 'controller/initializeApp.dart';
+import 'controller/tes-con.dart';
 import 'firebase_options.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path/path.dart';
@@ -30,6 +40,9 @@ import 'package:provider/provider.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_cached_pdfview/flutter_cached_pdfview.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+
 
 
 
@@ -39,10 +52,13 @@ import 'package:flutter_cached_pdfview/flutter_cached_pdfview.dart';
 
 void main() async {
  await initsat();
-  runApp(
-    MyApp()
-   
-  );
+ await Hive.initFlutter();
+ await Hive.openBox("names");
+
+ runApp(MyApp());
+
+
+
 
 }
 
@@ -50,10 +66,13 @@ class MyApp extends StatelessWidget {
    MyApp({super.key});
   @override
   Widget build(BuildContext context) {
+
     return GetMaterialApp(
+
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
       locale: Get.deviceLocale,
+        // home: list2(),
 
 
      

@@ -1,8 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:test_test/controller/Home_controller.dart';
+import '../view/test_lo_fi.dart' as c;
+
+import '../main.dart';
+import '../view/test_lo_fi.dart';
 
 
 class chat_con extends GetxController{
@@ -12,12 +18,43 @@ class chat_con extends GetxController{
   final au = AudioPlayer().obs;
   // final au = AudioPlayer().obs;
   bool isrr = false;
+  List<Map<String,dynamic>> messages2 = [];
+  final boxs = Hive.box("names");
+
+
+
+
+  gett(){
+  var g =  boxs.keys.map((e){
+      final cu = boxs.get(e);
+      return {
+        'key' : e,
+        'id1' : cu['id1'],
+        'id2' : cu['id2'],
+        'mas' : cu['mas'],
+        'tim' : cu['tim'],
+        't' : cu['t']
+      };
+    }).toList();
+    messages2 = g.reversed.toList();
+//     String sortField = 'tim';
+// messages2.sort((a, b) => b[sortField].compareTo(a[sortField]));
+    update();
+
+  }
 
 
 
 
 
- yyy(bool n){
+
+
+
+
+
+
+
+  yyy(bool n){
    isrr = n;
    update();
  }
@@ -63,10 +100,9 @@ class chat_con extends GetxController{
 
   @override
   void onInit() {
-    // onPlayerStateChanged();
-    // onDurationChanged();
-    // onPositionChanged();
-    // onPlayerComplete();
+      print("=========================================== 222222222222==========================================");
+
+
     super.onInit();
 
   }
@@ -126,7 +162,9 @@ class chat_con extends GetxController{
     ].join(":");
 
   }
-  
+
+
+
 
   
    

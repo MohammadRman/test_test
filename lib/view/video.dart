@@ -2,6 +2,8 @@ import 'package:chewie/chewie.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+
 
 class chat_vid extends StatefulWidget {
   final String data;
@@ -18,17 +20,24 @@ class _chat_vidState extends State<chat_vid> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: chewieController != null? Chewie(controller: chewieController!):Container(child: CircularProgressIndicator()));
+      body: chewieController != null? AspectRatio(aspectRatio:videoPlayerController!.value.aspectRatio ,
+      child: Chewie(controller: chewieController!),)
+      :Container(child: CircularProgressIndicator()));
   }
 
   Future getVideo()async{
-    videoPlayerController = VideoPlayerController.network(widget.data)..initialize().then((value) {
+
+    final videoCache = await DefaultCacheManager().getSingleFile(
+        widget.data
+    );
+    videoPlayerController = VideoPlayerController.file(videoCache)..initialize().then((value) {
       setState(() {
       });
       chewieController = ChewieController(
         videoPlayerController: videoPlayerController!,
         autoPlay: true,
         looping: true,
+
 
         errorBuilder: (context, errorMessage) {
           return Center(child: CircularProgressIndicator(color:Colors.red,),);
@@ -55,8 +64,7 @@ class _chat_vidState extends State<chat_vid> {
   }
 }
 
-
-
+// uuuuuu
 
 
 

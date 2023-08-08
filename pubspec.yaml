@@ -74,6 +74,14 @@ dependencies:
   flutter_cached_pdfview: ^0.4.2
   swipe_to: ^1.0.2
   flutter_keyboard_visibility: ^5.4.1
+  hijri: ^3.0.0
+  connectivity_plus: ^4.0.1
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+  flutter_ffmpeg: ^0.4.2
+  flutter_cache_manager: ^3.3.1
+
+
 
 
 

@@ -10,6 +10,7 @@ import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:test_test/controller/stories_controller.dart';
+import 'package:test_test/controller/tes-con.dart';
 import 'package:test_test/view/Home.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../firebase_options.dart';
@@ -23,6 +24,8 @@ class Home_controller extends GetxController{
    GlobalKey<FormState> f3  = GlobalKey<FormState>();
    var firb =  FirebaseFirestore.instance.collection('test');
   RxString kkk = ''.obs ;
+ var  tn2 = '';
+
 
   String? em;
  String? pas ;
@@ -33,6 +36,7 @@ class Home_controller extends GetxController{
  String? nam;
  RxString voiceFilePath = ''.obs;
   // final fo = FocusNode().obs;
+  String? dd;
 
  Future voi()async{
   final appDocumentsDir =await getApplicationDocumentsDirectory();
@@ -199,7 +203,9 @@ class bi extends Bindings{
     Get.put(Home_controller());
    Get.put(stories_contlooer());
     Get.put(chat_con());
-   
+    Get.lazyPut(() => NetworkController());
+
+
 
   }
 

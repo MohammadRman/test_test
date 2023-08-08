@@ -1,4 +1,5 @@
 import 'package:audioplayers/audioplayers.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -11,6 +12,8 @@ import 'package:voice_message_package/voice_message_package.dart';
 import '../controller/Home_controller.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:swipe_to/swipe_to.dart';
+import 'package:jiffy/jiffy.dart';
+
 
 
 import '../main.dart';
@@ -19,7 +22,7 @@ chat_con f = Get.find();
 
 
 
-
+String? cc ;
 
 class chats extends StatelessWidget {
   String? mm;
@@ -38,6 +41,7 @@ class chats extends StatelessWidget {
   String? id2;
   bool? so;
   String? now;
+
    chats({super.key,required this.mm,required this.idd
    ,required this.newDate ,required this.t,required this.image
      ,required this.video,required this.son,
@@ -49,7 +53,13 @@ class chats extends StatelessWidget {
      required this.msss2,
      required this.id2,
      required this.so,
-     required this.now});
+     required this.now,
+   });
+
+
+
+
+
 
 
   @override
@@ -63,6 +73,7 @@ class chats extends StatelessWidget {
 
 
   Widget chat_text(){
+    // print(Jiffy(now.toString()).format('hh:mm a'));
     if(so == false){
       zz.sendMessageupd(idd!,now!);
     }
@@ -102,7 +113,7 @@ class chats extends StatelessWidget {
     bottomLeft:
     Radius.circular(16))),
     child: Center(child:  Text(
-    "${mm}",
+      '${mm}',
 
     style: TextStyle(
     color: Colors.white),
@@ -634,6 +645,9 @@ class chats extends StatelessWidget {
 
 
   check(context){
+    print(ii.tn2 = now!);
+
+
      if(t == 'te'){
       return chat_text();
      }
@@ -656,10 +670,15 @@ class chats extends StatelessWidget {
      if(t == 'ree2'){
        return chat_reimges(context);
      }
+
   }
 
 
+
+
 }
+
+
 
 
 String formatTime(Duration d){
@@ -673,6 +692,7 @@ String formatTime(Duration d){
   ].join(":");
 
 }
+
 
 
 
