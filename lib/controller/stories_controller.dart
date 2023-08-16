@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:compress_images_flutter/compress_images_flutter.dart';
@@ -6,11 +7,16 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:path/path.dart';
 import 'dart:io';
 
 
 class stories_contlooer extends GetxController{
+  final audioPlayer = AudioPlayer();
+  late StreamSubscription<PlayerState> playerStateChangedSubscription;
+  late Future<Duration?> futureDuration;
+
   GlobalKey<FormState> e1 = GlobalKey<FormState>();
    String? title ;
    String? body;
@@ -87,8 +93,28 @@ class stories_contlooer extends GetxController{
   }
 
 
- 
 
+
+  Future inch(String source)async{
+    playerStateChangedSubscription =
+        audioPlayer.playerStateStream.listen(playerStateListener);
+    // futureDuration = _audioPlayer.setAudioSource(widget.source);
+    futureDuration = audioPlayer.setAudioSource(AudioSource.uri(Uri.parse(source))
+    );
+    // cacheAndPlayAudio(widget.source);
+    update();
+
+  }
+
+  void playerStateListener(PlayerState state) async {
+    if (state.processingState == ProcessingState.completed) {
+      await reset();
+    }
+  }
+  Future<void> reset() async {
+    await audioPlayer.stop();
+    return audioPlayer.seek(const Duration(milliseconds: 0));
+  }
 
 }
 

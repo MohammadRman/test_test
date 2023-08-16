@@ -1,13 +1,17 @@
+import 'dart:io';
+
 import 'package:audioplayers/audioplayers.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:test_test/controller/chat_cont.dart';
 import 'package:test_test/view/chat.dart';
 import 'package:test_test/view/video.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:test_test/view/vo.dart';
 import 'package:voice_message_package/voice_message_package.dart';
 import '../controller/Home_controller.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -332,7 +336,6 @@ class chats extends StatelessWidget {
               ? Padding(
             padding: const EdgeInsets.all(12.0),
             child: Container(
-              width: 200,
               decoration: BoxDecoration(
                   color: Colors.blue,
                   borderRadius: BorderRadius.only(
@@ -340,16 +343,24 @@ class chats extends StatelessWidget {
                       topRight: Radius.circular(16),
                       bottomLeft:
                       Radius.circular(16))),
-                  child: VoiceMessage(
-                    audioSrc: son,
-                    played: false, // To show played badge or not.
-                    me: true, //
-                    formatDuration: formatTime,
+                  // child:  AudioPlayerMessage(
+                  //   source: son!,
+                  //   id: 'hggffv',
+                  //   key: UniqueKey(),
+                  //
+                  // )
 
-                    onPlay: ()async{
-                    },
-                      key: UniqueKey()
-                  )
+
+                  // VoiceMessage(
+                  //   audioSrc: son,
+                  //   played: false, // To show played badge or not.
+                  //   me: true, //
+                  //   formatDuration: formatTime,
+                  //
+                  //   onPlay: ()async{
+                  //   },
+                  //     key: UniqueKey()
+                  // )
 
             ),
           )
@@ -422,14 +433,12 @@ class chats extends StatelessWidget {
               child: Center(
                   child: IconButton(icon: Icon(Icons.picture_as_pdf),onPressed:()async{
                     Navigator.of(context).push(MaterialPageRoute(builder: (context){
-                      return splash(pd: pdd,);
+                      return splash(pd:pdd,);
 
                     }));
 
 
-                    ;
-
-                  } ),
+                  }),
               ),
               height: 50,
             ),
@@ -448,7 +457,7 @@ class chats extends StatelessWidget {
               child: Center(
                 child: IconButton(icon: Icon(Icons.picture_as_pdf),onPressed:(){
                   Navigator.of(context).push(MaterialPageRoute(builder: (context){
-                    return splash(pd: pdd,);
+                    return splash(pd: pdd!,);
 
                   }));
                 } ),
@@ -692,6 +701,7 @@ String formatTime(Duration d){
   ].join(":");
 
 }
+
 
 
 

@@ -31,6 +31,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:pdf_compressor/pdf_compressor.dart';
 import 'package:record/record.dart';
 import 'package:test_test/view/chatsn.dart';
+import 'package:test_test/view/vo.dart';
 import 'package:video_compress/video_compress.dart';
 import 'package:voice_message_package/voice_message_package.dart';
 import 'package:hijri/digits_converter.dart';
@@ -50,6 +51,8 @@ import 'package:just_audio/just_audio.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'dart:async';
 import 'package:test_test/view/chatsn.dart' as chu;
+import 'package:flutter_document_picker/flutter_document_picker.dart';
+
 
 
 
@@ -67,6 +70,8 @@ class ChatRoom extends StatefulWidget {
 }
 
 class _ChatRoomState extends State<ChatRoom> {
+  late Future<Duration?> futureDuration;
+
   ScrollController c = new ScrollController();
   TextEditingController con = TextEditingController();
   CompressImagesFlutter c1 = CompressImagesFlutter();
@@ -81,11 +86,17 @@ class _ChatRoomState extends State<ChatRoom> {
   List imagePaths = [];
   final record = Record();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  FilePickerResult? result;
+  FlutterDocumentPickerParams params = FlutterDocumentPickerParams(
+      allowedUtiTypes: ['com.adobe.pdf'],
+      allowedMimeTypes: ['application/pdf'],
+  );
 
 
 
 
-  File? f;
+
+      File? f;
   var u;
   late final GalleryController controller;
   bool isLoading = false;
@@ -102,6 +113,11 @@ class _ChatRoomState extends State<ChatRoom> {
   bool? cx = false;
   bool? up = false;
   bool? up2 = false;
+  List messages = [];
+  final _audioPlayer = AudioPlayer();
+  bool pl = false;
+
+
 
 
 
@@ -155,6 +171,7 @@ class _ChatRoomState extends State<ChatRoom> {
   @override
   void initState() {
     super.initState();
+    getm();
     _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
     ccx.gett();
     cc();
@@ -227,7 +244,7 @@ class _ChatRoomState extends State<ChatRoom> {
       builder: (controller) {
         return Scaffold(
           appBar: AppBar(backgroundColor: cx == true ? Colors.blue : Colors.red
-              , title: Text('${zz.gett('1689579999334046')}')),
+              , title: Text('${controller.id2.value}')),
 
           body: Column(children: [
             Expanded(
@@ -266,6 +283,8 @@ class _ChatRoomState extends State<ChatRoom> {
                                   shrinkWrap: true,
                                   controller: c,
                                   itemCount: snapshot.data!.docs.length,
+                                   // key: Key("${Random().nextDouble()}"),
+                                  key: GlobalKey(),
                                   itemBuilder: (context, index) {
                                     bool isSameDate = false;
                                     String? newDate = '';
@@ -310,41 +329,52 @@ class _ChatRoomState extends State<ChatRoom> {
                                       jj.dd = newDate;
                                     }
 
-
-                                    return chats(
-                                      mm: snapshot.data!.docs[index]
-                                          .data()['mas'],
-                                      idd: snapshot.data!.docs[index]
-                                          .data()['id1'],
-                                      newDate: newDate,
-                                      t: snapshot.data!.docs[index].data()['t'],
-                                      image:
-                                      snapshot.data!.docs[index]
-                                          .data()['images'],
-                                      video: snapshot.data!.docs[index]
-                                          .data()['video'],
-                                      son: snapshot.data!.docs[index]
-                                          .data()['son2'],
-                                      pdd: snapshot.data!.docs[index]
-                                          .data()['pdf'],
-                                      fox: fo,
-                                      msss: snapshot.data!.docs[index]
-                                          .data()['msss'],
-                                      titl: snapshot.data!.docs[index]
-                                          .data()['titl'],
-                                      titl2: snapshot.data!.docs[index]
-                                          .data()['titl2'],
-                                      msss2: snapshot.data!.docs[index]
-                                          .data()['msss2'],
-                                      id2: snapshot.data!.docs[index]
-                                          .data()['id2'],
-                                      so: snapshot.data!.docs[index]
-                                          .data()['show'],
-                                      now: snapshot.data!.docs[index]
-                                          .data()['tim'],
+                                    return 
+                                      InkWell(onTap: (){
+                                        _showBottomSheet(context,snapshot.data!.docs[index]
+                                            .data()['son2'],);
+                                      },
+                                        child:
+                                        Container(color: Colors.cyan,width: 40,height: 30,
+                                          child: Center(child: Text('son2')),)
+                                      );
 
 
-                                    );
+
+                                    //   chats(
+                                    //   mm: snapshot.data!.docs[index]
+                                    //       .data()['mas'],
+                                    //   idd: snapshot.data!.docs[index]
+                                    //       .data()['id1'],
+                                    //   newDate: newDate,
+                                    //   t: snapshot.data!.docs[index].data()['t'],
+                                    //   image:
+                                    //   snapshot.data!.docs[index]
+                                    //       .data()['images'],
+                                    //   video: snapshot.data!.docs[index]
+                                    //       .data()['video'],
+                                    //   son: snapshot.data!.docs[index]
+                                    //       .data()['son2'],
+                                    //   pdd: snapshot.data!.docs[index]
+                                    //       .data()['pdf'],
+                                    //   fox: fo,
+                                    //   msss: snapshot.data!.docs[index]
+                                    //       .data()['msss'],
+                                    //   titl: snapshot.data!.docs[index]
+                                    //       .data()['titl'],
+                                    //   titl2: snapshot.data!.docs[index]
+                                    //       .data()['titl2'],
+                                    //   msss2: snapshot.data!.docs[index]
+                                    //       .data()['msss2'],
+                                    //   id2: snapshot.data!.docs[index]
+                                    //       .data()['id2'],
+                                    //   so: snapshot.data!.docs[index]
+                                    //       .data()['show'],
+                                    //   now: snapshot.data!.docs[index]
+                                    //       .data()['tim'],
+                                    //
+                                    //
+                                    // );
                                   }),
 
 
@@ -453,17 +483,15 @@ class _ChatRoomState extends State<ChatRoom> {
                             color: Colors.black,
                           )),
                       IconButton(
+
                         icon: Icon(Icons.fiber_manual_record),
                         onPressed: () async {
                           if (await record.hasPermission()) {
                             // //
                             await controller.voi();
+                            
                             await RecordMp3.instance.start(
                                 controller.voiceFilePath.value, (type) {});
-//                         await record.start(
-//                           path: controller.voiceFilePath.value,
-//                           encoder: AudioEncoder.AAC_HE, // by default
-//                         );
                           }
                         },
                       ),
@@ -471,6 +499,8 @@ class _ChatRoomState extends State<ChatRoom> {
                         icon: Icon(Icons.stop),
                         onPressed: () async {
                           await RecordMp3.instance.stop();
+                          messages.clear();
+
                           File fff = File(controller.voiceFilePath.value);
                           var r = Random().nextInt(1000);
                           var fir = FirebaseStorage.instance.ref(
@@ -488,43 +518,20 @@ class _ChatRoomState extends State<ChatRoom> {
                           var n = await fir.getDownloadURL();
 
                           ///
-                          zz.sendson(controller.id2!.value, n,
-                              FirebaseAuth.instance.currentUser!.uid);
+                          //  sen(n);
+                           zz.sendson(controller.id2!.value, n,FirebaseAuth.instance.currentUser!.uid);
                         },
                       ), IconButton(icon: Icon(Icons.picture_as_pdf),
                         onPressed: () async {
-                          FilePickerResult? result = await FilePicker.platform
-                              .pickFiles(
-                            type: FileType.custom,
-                            allowedExtensions: ['pdf'],
-                          );
+                          final paths = await FlutterDocumentPicker.openDocuments(params: params);
 
-                          if (result != null) {
-                            final appDocumentsDirectory = await getApplicationDocumentsDirectory();
-                            final outputFilePath = "${appDocumentsDirectory
-                                .path}/compressed.pdf";
-                            await PdfCompressor.compressPdfFile(
-                                result.files.single.path!, outputFilePath,
-                                CompressQuality.HIGH);
-                            var r = Random().nextInt(1000);
-                            final storageRef =
-                            FirebaseStorage.instance.ref().child("pdf/$r");
-                            await storageRef.putFile(File(outputFilePath)).then(
-                                  (p0) {
-                                Fluttertoast.showToast(
-                                    msg: 'تم رفع pdf',
-                                    toastLength: Toast.LENGTH_SHORT,
-                                    gravity: ToastGravity.BOTTOM,
-                                    timeInSecForIosWeb: 1,
-                                    backgroundColor: Colors.blue,
-                                    textColor: Colors.white,
-                                    fontSize: 16.0);
-                                // //
-                              },
-                            );
-                            var getDo = await storageRef.getDownloadURL();
-                            zz.sendpdf(controller.id2.value, getDo,
-                                FirebaseAuth.instance.currentUser!.uid);
+                          if (paths != null) {
+                            paths!.forEach((element) {
+                              pdf(controller.id2.value, element!);
+
+
+                            });
+
 
 
                             // قم بمعالجة الملف هنا
@@ -748,7 +755,64 @@ class _ChatRoomState extends State<ChatRoom> {
     // i2.clear();
   }
 
+  ///////////////////////////////////////////////////--------------------------kkkmmmlkhjnh\
 
+
+  sen(String ao)async{
+    await FirebaseFirestore.instance
+        .collection('chat')
+        .add({"s":ao}).catchError((){
+      print("eeeeeeeeeeeeeeee");
+
+    });
+  }
+
+  getm()async{
+      await FirebaseFirestore.instance.collection('chat').snapshots().listen((event) {
+        event.docs.forEach((element) {
+          setState(() {
+            messages.add(element.data()['s']);
+
+          });
+        });
+      });
+
+
+  }
+
+
+  void _showBottomSheet(BuildContext context,String soo) {
+    showModalBottomSheet(
+        backgroundColor: Colors.white,
+        barrierColor: Colors.transparent,
+        isDismissible: false
+        ,context: context, builder: (_){
+      return Container(
+        child: Column(mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              children: [
+                Container(margin: EdgeInsets.only(top: 6,right: 10),child: InkWell(
+                  onTap: (){
+                    Get.back();
+                  },
+                    child: Icon(Icons.close))),
+
+              ],
+            ),
+            Row(
+              children: [
+                Container(child: AudioPlayerMessage(source: soo,key: UniqueKey(),id:'00999')),
+              ],
+            ),
+          ],
+        ),
+      );
+    });
+
+
+
+  }
 
 
 
@@ -846,9 +910,6 @@ class _ChatRoomState extends State<ChatRoom> {
 
 
 
-
-
-
   up_v(String id2,String fl)async{
 
     var r = Random().nextInt(1000);
@@ -882,14 +943,36 @@ class _ChatRoomState extends State<ChatRoom> {
     });
   }
 
-  com_c(String path)async{
-    var mediaInfo = await VideoCompress.compressVideo(
-      path,
-      quality: VideoQuality.DefaultQuality,
-      deleteOrigin: false, // It's false by default
-    );
+  pdf(String id2,String im)async{
 
-    return mediaInfo!.file;
+
+    final appDocumentsDirectory = await getApplicationDocumentsDirectory();
+   //  final outputFilePath = "${appDocumentsDirectory
+   //      .path}/compressed.pdf";
+   //  await PdfCompressor.compressPdfFile(
+   // im , outputFilePath,
+   //  CompressQuality.MEDIUM);
+    var r = Random().nextInt(1000);
+    final storageRef =
+    FirebaseStorage.instance.ref().child("pdf/$r");
+    await storageRef.putFile(File(im)).then(
+          (p0) {
+        Fluttertoast.showToast(
+            msg: 'تم رفع pdf',
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.blue,
+            textColor: Colors.white,
+            fontSize: 16.0);
+        // //
+      },
+    );
+    var getDo = await storageRef.getDownloadURL();
+    zz.sendpdf(id2, getDo,
+        FirebaseAuth.instance.currentUser!.uid);
+
+
 
   }
 
@@ -920,6 +1003,10 @@ class zz {
         .orderBy('tim', descending: true)
         .snapshots();
   }
+
+
+
+
 
   static Future<void> sendMessage(String id2, String mass, String id1) async {
     var ti = DateTime.now();
@@ -994,7 +1081,7 @@ class zz {
         .add(m);
   }
 
-   static Future<void> sendson(String id2, String s, String id1) async {
+   static Future<void> sendson(String id2, String s,String id1) async {
     var ti = DateTime.now();
     String formattedTime = ti.toUtc().toIso8601String();
 
@@ -1012,9 +1099,14 @@ class zz {
       't': 'so'
     };
 
+
+    // await FirebaseFirestore.instance
+    //     .collection('chat').doc(tim)
+    //     .set(m);
     await FirebaseFirestore.instance
-        .collection('chat/${getConversationID(id2)}/messages')
-        .add(m);
+        .collection('chat/${getConversationID(id2)}/messages').doc(nn)
+        .set(m);
+
   }
 
   static Future<void> sendpdf(String id2, String pdf, String id1) async {

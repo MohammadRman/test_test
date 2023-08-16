@@ -41,6 +41,7 @@ dependencies:
   firebase_core: ^2.13.0
   firebase_auth: ^4.6.1
   image_picker: 0.7.0
+
   http: 0.13.6
   cloud_firestore: ^4.6.0
   firebase_storage: ^11.2.0
@@ -64,8 +65,7 @@ dependencies:
   flutter_image_compress: ^2.0.3
   drishya_picker: ^2.0.0
   light_compressor: ^2.0.1
-  record: ^3.0.3
-#  audioplayers: ^4.1.0
+  record: ^4.4.3
   record_mp3: ^3.0.0
   just_audio: ^0.9.34
   voice_message_package: ^1.0.41
@@ -80,6 +80,7 @@ dependencies:
   hive_flutter: ^1.1.0
   flutter_ffmpeg: ^0.4.2
   flutter_cache_manager: ^3.3.1
+  flutter_document_picker: ^5.2.3
 
 
 

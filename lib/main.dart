@@ -1,10 +1,13 @@
+import 'dart:convert';
 import 'dart:ffi';
+import 'dart:io';
 
 import 'package:another_flutter_splash_screen/another_flutter_splash_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart';
@@ -47,13 +50,17 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 
 
-
-
+File? file;
+String? url;
 
 void main() async {
  await initsat();
  await Hive.initFlutter();
  await Hive.openBox("names");
+ if(url != null){
+
+ }
+
 
  runApp(MyApp());
 
@@ -97,28 +104,55 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class splash extends StatelessWidget {
+
+class splash extends StatefulWidget {
   String? pd;
-   splash({Key? key,required this.pd}) : super(key: key);
+   splash ({Key? key,required this.pd});
+
+  @override
+  State<splash> createState() =>splash_State();
+}
+
+class splash_State extends State<splash> {
+  // file = DefaultCacheManager().getFileStream().first;
+
 
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body:
-         PDF().cachedFromUrl(
-           pd!,
-          placeholder: (progress) => Center(child: Text('$progress %')),
-          errorWidget: (error) => Center(child: Text(error.toString())),
-        )
+Widget build(BuildContext context) {
+return Scaffold(
+body:
+PDF().cachedFromUrl(
+  widget.pd!,
+placeholder: (progress) => Center(child: Text('$progress %')),
+errorWidget: (error) => Center(child: Text(error.toString())),
+)
 
-    );
+);
 
+}
+
+@override
+  void initState() {
+  url = widget.pd!;
+
+    super.initState();
   }
+
+
 }
 
 
-// social_media_recorder 0.2.0
+
+
+kk([String? cc]){
+  return cc!;
+}
+
+
+
+
+
 
 
 

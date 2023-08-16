@@ -20,8 +20,10 @@ class _chat_vidState extends State<chat_vid> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: chewieController != null? AspectRatio(aspectRatio:videoPlayerController!.value.aspectRatio ,
-      child: Chewie(controller: chewieController!),)
+      body: chewieController != null? Center(
+        child: AspectRatio(aspectRatio:videoPlayerController!.value.aspectRatio ,
+        child: Chewie(controller: chewieController!),),
+      )
       :Container(child: CircularProgressIndicator()));
   }
 
